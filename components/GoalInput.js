@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Modal } from 'react-native';
+import styles from './styles';
 
 
 const GoalInput = props => {
@@ -11,36 +12,44 @@ const GoalInput = props => {
         setEnteredGoal(enteredText)
     };
 
-    return (
-        // text input and button view 
-        <View style={styles.inputContainer}>
-            <TextInput
-                placeholder="Goals"
-                style={styles.input}
-                onChangeText={goalInputHandler}
-                value={enteredGoal}
-            />
+    const addGoalHandler = () => {
+        props.onAddGoal(enteredGoal);
+        setEnteredGoal('');
+    };
 
-            <Button
-                title='Add'
-                onPress={props.onAddGoal.bind(this, enteredGoal)}
-            />
-        </View>
+    return (
+        <Modal
+            visible={props.visible}
+            animationType='slide'
+        >
+            {/* text input and button view */}
+            <View style={styles.inputContainer}>
+                <TextInput
+                    placeholder="Goals"
+                    style={styles.input}
+                    onChangeText={goalInputHandler}
+                    value={enteredGoal}
+                />
+
+                <View style={styles.buttonContainer}>
+                    <View style={styles.button}>
+                        <Button
+                            title='cancel'
+                            color='red'
+                            onPress={props.onCancel}
+                        />
+                    </View>
+
+                    <View style={styles.button}>
+                        <Button
+                            title='Add'
+                            onPress={addGoalHandler}
+                        />
+                    </View>
+                </View>
+            </View>
+        </Modal>
     );
 };
-
-const styles = StyleSheet.create({
-    inputContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-    input: {
-        borderColor: 'black',
-        borderWidth: 2,
-        padding: 10,
-        width: 200,
-    },
-})
 
 export default GoalInput;
