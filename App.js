@@ -13,6 +13,9 @@ export default function App() {
 
   // manages the array of entered goals 
   const addGoalHandler = (goalTitle) => {
+    if (goalTitle.length === 0) {
+      return;
+    }
     // gets current array of goals and ands the entered text to the array
     setGoals(goals => [...goals, { id: Math.random().toString(), text: goalTitle }]);
     setIsAddMode(false);
