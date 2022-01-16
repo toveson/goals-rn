@@ -14,7 +14,13 @@ export default function App() {
   // manages the array of entered goals 
   const addGoalHandler = (goalTitle) => {
     // gets current array of goals and ands the entered text to the array
-    setGoals(goals => [...goals, { key: Math.random().toString(), text: goalTitle }]);
+    setGoals(goals => [...goals, { id: Math.random().toString(), text: goalTitle }]);
+  };
+
+  const removeGoalHandler = (goalID) => {
+    setGoals(goals => {
+      return goals.filter((goal) => goal.id !== goalID);
+    })
   };
 
   return (
@@ -23,11 +29,15 @@ export default function App() {
       <GoalInput onAddGoal={addGoalHandler} />
       {/* A conditionally rendered scrolling component view of the users goals */}
       <FlatList
-        keyExtractor={(item, index) => item.key}
+        keyExtractor={(item, index) => item.id}
         data={goals}
         // makes a View component for each item in goal array
         renderItem={itemData => (
-          <GoalItem title={itemData.item.text} />
+          <GoalItem
+            id={itemData.item.id}
+            onDelete={removeGoalHandler}
+            title={itemData.item.text}
+          />
         )} />
     </View>
 
